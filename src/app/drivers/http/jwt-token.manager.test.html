@@ -1,0 +1,35 @@
+import JwtTokenManager from './jwt-token-manager';
+import TokenManager from '../../interfaces/http/token-manager';
+
+describe('Jwt token manager', () => {
+  test('Return valid token', () => {
+    const mockedToken = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1FSkZRMFkwTnpBMU0wUkZRVU0wTTBaRVJEWTVNell5TWpWQk1VRXlPVFV3UkRVeVJrUXlNZyJ9.eyJodHRwczovL2RlbGl2ZXJ5bXVjaC5jb20uYnIiOnsicm9sZXMiOltdLCJmcmFuY2hpc2VzIjp7fSwiYWxsb3dlZEZyYW5jaGlzZXMiOnt9LCJ1c2VyIjp7ImZ1bGxfbmFtZSI6IkJhY2tPZmZpY2UgVXNlciIsImVtYWlsIjoiYmFja29mZmljZV91c2VyQGRlbGl2ZXJ5bXVjaC5jb20uYnIifSwidGltZXpvbmUiOiJBbWVyaWNhL0xvc19BbmdlbGVzIn0sImlzcyI6Imh0dHBzOi8vZG1mcmFuY2hpc2UtZGV2LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZmRhMTc5ODc0OGZmNTAwNjhlOTg2NWUiLCJhdWQiOlsiZGV2IGxvZ2lzdGljIiwiaHR0cHM6Ly9kbWZyYW5jaGlzZS1kZXYuYXV0aDAuY29tL3VzZXJpbmZvIl0sImlhdCI6MTYyNDI5NjIzMywiZXhwIjoxNjI0MzAzNDMyLCJhenAiOiJXNDBOeXU3QWVYRTJtZFJVYTJKRHhuMVdXN21UcDJYZyIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUiLCJwZXJtaXNzaW9ucyI6WyJ1cGRhdGU6dXNlcnMiXX0.E6gyWgjnzx-ZB3esjQUpCL8nwp0KhaMpPsZFtoHCl4iTGEqWytzVrexrOu54TgBGFOM7RwAnHJ-U-jdCpynSiTY8bbODQDZnsPFgcrokjgtULOFnRS_d_TpTmGAtMdi2TpPY_A-Js0OGtsLxajzsK2JtIXVnjFxnDkwmMtydjynSV6qaCNc0cBKA6PoOkWgdY_X8jUPCFOqRpH4PDa4-cQSTGahGiYTw-GsJb35XTGnU8ummRVb66JZom186PAlmmhWX8zikK9YWy_2_Jd64eRIRMtJ9F6Ighjt-EYeMCk3Xebd_cz9MJZd-BpIEkxMByc2rgmB2MEBKcu24Xr7DIA';
+    const SystemUnderTesting: TokenManager = new JwtTokenManager();
+    const returnOfSut: string = SystemUnderTesting.decode(mockedToken);
+    expect(returnOfSut).toStrictEqual({
+      'https://deliverymuch.com.br': {
+        roles: [],
+        franchises: {},
+        allowedFranchises: {},
+        user: {
+          full_name: 'BackOffice User',
+          email: 'backoffice_user@deliverymuch.com.br',
+        },
+        timezone: 'America/Los_Angeles',
+      },
+      iss: 'https://dmfranchise-dev.auth0.com/',
+      sub: 'auth0|5fda1798748ff50068e9865e',
+      aud: [
+        'dev logistic',
+        'https://dmfranchise-dev.auth0.com/userinfo',
+      ],
+      iat: 1624296233,
+      exp: 1624303432,
+      azp: 'W40Nyu7AeXE2mdRUa2JDxn1WW7mTp2Xg',
+      scope: 'openid profile',
+      permissions: [
+        'update:users',
+      ],
+    });
+  });
+});

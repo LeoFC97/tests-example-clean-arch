@@ -1,0 +1,61 @@
+import { Collection, Connection } from 'mongoose';
+import request from 'supertest';
+import SetupDatabaseForTests from '../../../config/setup-database-for-tests';
+import startExpressServer from '../../drivers/http/server';
+import MockedAdjustment from '../../../test/mocks/adjustment/adjustment';
+import MockedValidJwt from '../../../test/mocks/jwt';
+
+const app = startExpressServer();
+let connection: Connection;
+let adjustmentCollection: Collection;
+
+describe('Router', () => {
+  beforeAll(async () => {
+    await SetupDatabaseForTests.initializeMongoInMemory();
+    connection = await SetupDatabaseForTests.getConnection();
+    adjustmentCollection = connection.collection('adjustments');
+  });
+
+  afterAll(async () => {
+    SetupDatabaseForTests.closeConnection(connection);
+  });
+
+  afterEach(async () => {
+    await adjustmentCollection.deleteMany({});
+  });
+
+  test('Should return 200 on [GET] /health', async () => {
+    await request(app)
+      .get('/health')
+      .auth(MockedValidJwt.token, { type: 'bearer' })
+      .expect(200);
+  });
+
+  test('Should return 200 on [POST] /occurrences/adjustments/:id/approve with valid adjustment id', async () => {
+    await adjustmentCollection.insertOne(MockedAdjustment);
+    await request(app)
+      .post(`/occurrences/adjustments/${MockedAdjustment._id.toString()}/approve`)
+      .auth(MockedValidJwt.token, { type: 'bearer' })
+      .expect(200);
+  });
+
+  test('Should return 404 on [POST] /occurrences/adjustments/:id/approve if there is no adjustment with given id', async () => {
+    await request(app)
+      .post('/occurrences/adjustments/60c3ca93aea1c953388aa07c/approve')
+      .expect(404);
+  });
+
+  test('Should return 200 on [POST] /occurrences/adjustments/:id/cancel with valid adjustment id', async () => {
+    await adjustmentCollection.insertOne(MockedAdjustment);
+    await request(app)
+      .post(`/occurrences/adjustments/${MockedAdjustment._id.toString()}/cancel`)
+      .auth(MockedValidJwt.token, { type: 'bearer' })
+      .expect(200);
+  });
+
+  test('Should return 404 on [POST] /occurrences/adjustments/:id/cancel if there is no adjustment with given id', async () => {
+    await request(app)
+      .post('/occurrences/adjustments/60c3ca93aea1c953388aa07c/cancel')
+      .expect(404);
+  });
+});
