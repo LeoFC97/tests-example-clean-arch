@@ -13,7 +13,6 @@ class CreateListController implements Controller {
   ) {}
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     const { body, i18n, user } = httpRequest;
-    console.log(user);
     const data = await this.createListValidator
       .validate<CreateListBodyData>(body, i18n);
     const createdList = await this.createListUseCase.execute(
@@ -26,9 +25,6 @@ class CreateListController implements Controller {
       status: 201,
       body: createdList,
     };
-    console.log(`createdList`)
-    console.log(createdList)
-    console.log(`createdList`)
     console.info({
       userEmail: user.email,
       userName: user.name,
