@@ -1,6 +1,5 @@
 import { ObjectId } from 'mongodb';
 import { List, CreateListBodyData, CreateListData } from '../../app/interfaces/entities/list/list';
-import user from './user';
 import mockedUser from './user';
 
 export const listThatWasCreatedMock: List = {
@@ -29,5 +28,5 @@ export const CreateListDataMock: CreateListData = {
     name: 'Mocked title',
     finished: false,
   }],
-  createdBy: user.uuid,
+  createdBy: mockedUser.uuid,
 };

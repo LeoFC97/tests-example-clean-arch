@@ -1,3 +1,3 @@
 export default {
-  'entity.Adjustment': 'Ajuste',
+  'entity.List': 'List',
 };

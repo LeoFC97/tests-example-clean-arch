@@ -10,8 +10,5 @@ export default {
   'message.number.integer': 'O campo "{field}" deve ser um número inteiro.',
   'message.string.guid': 'O campo "{field}" deve ser um uuid válido.',
   'message.array.min': 'O campo "{field}" deve conter ao menos "{limit}" elemento.',
-  'message.company.doesnt-exist': 'A empresa de uuid: "{value}" não existe.',
   'message.string.base': 'O campo "{field}" deve ser uma string',
-  'message.adjustment.doesnt-exist': 'O ajuste financeiro de id: "{value}" não existe.',
-  'message.adjustment.not-status': 'O ajuste financeiro de id: "{value}" não tem o status "{valid}".',
 };
