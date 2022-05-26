@@ -49,9 +49,9 @@ describe('Create list use case', () => {
   });
 
   test('Should return the data returned from the repository', async () => {
-    const createdOccurrence = await useCase.execute(CreateListDataMock);
+    const createdList = await useCase.execute(CreateListDataMock);
 
-    expect(createdOccurrence).toStrictEqual(listThatWasCreatedMock);
+    expect(createdList).toStrictEqual(listThatWasCreatedMock);
   });
   test('Should only call create repository method one time', async () => {
     await useCase.execute(CreateListDataMock);
